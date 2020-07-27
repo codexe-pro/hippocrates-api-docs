@@ -65,7 +65,7 @@ curl \
 
 API uses Json Web Token ([JWT](https://en.wikipedia.org/wiki/JSON_Web_Token)) for authorization. 
 
-* [/api/v0/authtoken/](/api/v0/auth/token/) - get token endpoint 
+* [/api/v0/auth/token/](/api/v0/auth/token/) - get token endpoint 
 * [/api/v0/token/refresh/](api/v0/auth/token/refresh/) - refresh token endpoint. 
 
 When short-lived access token expires, you can use the longer-lived refresh token to obtain another access token
