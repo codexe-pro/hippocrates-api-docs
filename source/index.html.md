@@ -32,7 +32,7 @@ For testing the API, we suggest using one of the following tools:
 curl \
   -X POST \
   -H "Content-Type: application/json" \
-  -d '{"username": "davidattenborough", "password": "boatymcboatface"}' \
+  -d '{"email": "davidattenborough", "password": "boatymcboatface"}' \
   http://localhost:8000/api/v0/auth/token/
 ```
 
