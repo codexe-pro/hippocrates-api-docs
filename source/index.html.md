@@ -279,7 +279,8 @@ curl \
     "college": "NAU",
     "diploma": "KO034123123",
     "job_place": "Central Hospital",
-    "job_name": "Dentist"
+    "job_name": "Dentist",
+    "specialization": 1
   }
   ' \
   http://localhost:8000/api/v0/users/registration/
@@ -303,6 +304,7 @@ curl \
   "diploma": "KO034123123",
   "job_place": "Central Hospital",
   "job_name": "Dentist",
+  "specialization": 1,
   "email_confirmed: false
 } 
 ```
