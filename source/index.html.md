@@ -321,14 +321,14 @@ Field name | Type | Is required | Read only | Description
 email | string | yes | no | Users email is also username
 first_name | string | yes | no
 last_name | string | yes | no
-parent_name | string | yes | no
+parent_name | string | no | no
 phone | string | yes | no
-work_phone | string | yes | no
-birth_date | date | yes | no
+work_phone | string | no | no
+birth_date | date | no | no
 region | string | yes | no
 town | string | yes | no
-college | string | yes | no
-diploma | string | yes | no
+college | string | no | no
+diploma | string | no | no
 job_place | string | yes | no
 job_name | string | yes | no
 specialization | int | yes | no | [Specializations](#specializations) object ID
