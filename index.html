@@ -705,6 +705,11 @@
 <td>GET, PUT, PATCH, DELETE</td>
 <td>User detail endpoint.</td>
 </tr>
+<tr>
+<td>/api/v0/me/</td>
+<td>GET, PUT, PATCH</td>
+<td>Detail of current authorized user. Use this endpoint to get or update current user information.</td>
+</tr>
 </tbody></table>
 <h2 id='registration'>Registration</h2>
 <blockquote>
@@ -756,7 +761,7 @@
   <span class="s2">"email_confirmed: false
 } 
 </span></code></pre></div>
-<p>To register new user, POST user data to <strong>/api/v0/users/registration/</strong> endpoint.<br />
+<p>To register new user, POST user data to <strong>/api/v0/users/register/</strong> endpoint.<br />
 After success registration the platform will send confirmation link to user&#39;s email.<br />
 When user will visit confirmation link - <strong>email_confirmed</strong> field value will be changed to &#39;true&#39;.</p>
 <h2 id='data-2'>Data</h2>
