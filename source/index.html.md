@@ -235,6 +235,40 @@ Endpoint | Methods | Description
 
 ## Data
 
+> Get specializations list example:
+
+```shell
+{
+    "count": 5,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "name": "Хирург",
+            "secondary_name": "Хирургия",
+            "banner": "http://domain.com/media/specializations/banners/banner_1.png",
+            "main": false,
+            "main_on_categories_page": false,
+            "sort_id": 1,
+            "created": "2020-08-07T03:10:24.258973",
+            "updated": "2020-08-07T03:10:24.259024"
+        },
+        {
+            "id": 2,
+            "name": "Офтальмолог",
+            "secondary_name": "Офтальмология",
+            "banner": "http://domain.com/media/specializations/banners/banner_2.png",
+            "main": true,
+            "main_on_categories_page": false,
+            "sort_id": 2,
+            "created": "2020-08-07T03:10:40.671968",
+            "updated": "2020-08-07T03:10:40.672002"
+        }
+    ]
+}
+```
+
 Field name | Type | Is required | Read only | Default value
 -------------- | -------------- | -------------- | -------------- | --------------
 name | string | yes | no
