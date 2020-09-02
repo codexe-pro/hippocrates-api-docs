@@ -349,6 +349,9 @@
                     <a href="#filtering" class="toc-h2 toc-link" data-title="Filtering">Filtering</a>
                   </li>
                   <li>
+                    <a href="#filtering-by-date" class="toc-h2 toc-link" data-title="Filtering by date">Filtering by date</a>
+                  </li>
+                  <li>
                     <a href="#searching" class="toc-h2 toc-link" data-title="Searching">Searching</a>
                   </li>
               </ul>
@@ -375,6 +378,26 @@
                   </li>
                   <li>
                     <a href="#data-2" class="toc-h2 toc-link" data-title="Data">Data</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#testing" class="toc-h1 toc-link" data-title="Testing">Testing</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#test-object" class="toc-h2 toc-link" data-title="Test object">Test object</a>
+                  </li>
+                  <li>
+                    <a href="#questions" class="toc-h2 toc-link" data-title="Questions">Questions</a>
+                  </li>
+                  <li>
+                    <a href="#answers" class="toc-h2 toc-link" data-title="Answers">Answers</a>
+                  </li>
+                  <li>
+                    <a href="#test-results" class="toc-h2 toc-link" data-title="Test results">Test results</a>
+                  </li>
+                  <li>
+                    <a href="#test-certificates" class="toc-h2 toc-link" data-title="Test Certificates">Test Certificates</a>
                   </li>
               </ul>
           </li>
@@ -415,7 +438,7 @@
 
 <p>Base URLs:</p>
 
-<p>Sandbox: <a href="http://46.101.235.194/api/v0/">http://46.101.235.194/api/v0/</a><br />
+<p>Sandbox: <a href="https://sandbox-api.hippocrates.org.ua/api/v0/">https://sandbox-api.hippocrates.org.ua/api/v0/</a><br />
 Production: -</p>
 <h2 id='http-verbs'>HTTP Verbs</h2>
 <p>Common HTTP request methods:</p>
@@ -747,7 +770,32 @@ Fields that can be used for ordering you can find in <strong>&#39;Ordering&#39;<
 </code></pre></div>
 <p>To filter object list you can use filter field name as URL param. <br />
 Fields that can be used to filter list you can find in <strong>&#39;Filtering&#39;</strong> column of data table for each object type.</p>
-<h2 id='searching'>Searching</h2>
+<h2 id='filtering-by-date'>Filtering by date</h2>
+<blockquote>
+<p>Get objects where start date greater than or equal to 2020-09-10T00:00 example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/objects/?start_date__gte<span class="o">=</span>2020-09-10T00:00
+
+</code></pre></div>
+<p>Filtering by dates is flexible. You can use double underscore <strong>&#39;__&#39;</strong> prefix in the end of field name with comparison abbreviation to compare values.</p>
+
+<p>Available comparison prefixes:</p>
+
+<ul>
+<li><strong>gt</strong> - greater than</li>
+<li><strong>lt</strong> - less than</li>
+<li><strong>gte</strong> - greater than or equal to</li>
+<li><strong>lte</strong> - less than or equal to</li>
+</ul>
+
+<p>Also you can use <strong>range</strong> prefix to get objects in selected date range</p>
+
+<blockquote>
+<p>Get objects where start date in range from 2020-09-01T00:00 to 2020-09-30T00:00:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/objects/?start_date__range<span class="o">=</span>2020-09-01T00:00,2020-09-30T00:00
+
+</code></pre></div><h2 id='searching'>Searching</h2>
 <blockquote>
 <p>Simple search example:</p>
 </blockquote>
@@ -1155,6 +1203,221 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 <td></td>
 </tr>
 </tbody></table>
+<h1 id='testing'>Testing</h1>
+<p>Events, Courses, Courses lessons and Webinars can has testing that user can pass.<br />
+Objects that have connected tests can have settings fields for testings like:</p>
+
+<ul>
+<li><strong>success_percent</strong> - indicates what percentage of correct answers must be for the test to be considered successful. <strong>Default value for the platform is 70.0%</strong></li>
+<li><strong>max_tries</strong> - indicates how much times user able to retry test. <strong>If max_tries equal to zero - it means that user can retry test infinite times.</strong></li>
+</ul>
+<h2 id='test-object'>Test object</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/objects/test/
+
+</code></pre></div>
+<blockquote>
+<p>Success response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"id"</span>: 1, 
+  <span class="s2">"created"</span>: <span class="s2">"2020-08-31T18:47:28.818181"</span>,
+  <span class="s2">"questions_set"</span>: <span class="o">[</span>...],
+  <span class="s2">"success_percent"</span>: 70.0,
+  <span class="s2">"max_tries"</span>: 3,
+  <span class="s2">"user_statistics"</span>: <span class="o">{</span>
+      <span class="s2">"tries"</span>: 2,
+      <span class="s2">"test_available"</span>: <span class="nb">true</span>
+  <span class="o">}</span>
+<span class="o">}</span> 
+</code></pre></div>
+<blockquote>
+<p>Create test example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST http://localhost:8000/api/v0/objects/test/
+
+</code></pre></div>
+<blockquote>
+<p>Success response will return code 201 and test object.</p>
+</blockquote>
+
+<p>Use object test detail endpoint to get test object, test setting sand users statistics or to create it (usint POST method).</p>
+
+<p>User statistics show how much tries user used and is test available.</p>
+<h2 id='questions'>Questions</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/objects/test/questions/
+
+</code></pre></div>
+<blockquote>
+<p>Success response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"count"</span>: 3,
+  <span class="s2">"next"</span>: null,
+  <span class="s2">"previous"</span>: null,
+  <span class="s2">"results"</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">"id"</span>: 1,
+      <span class="s2">"title"</span>: <span class="s2">"What color is the red cap?"</span>,
+      <span class="s2">"multiple_answers"</span>: <span class="nb">false</span>,
+      <span class="s2">"created"</span>: <span class="s2">"2020-08-31T18:51:41.191955"</span>,
+      <span class="s2">"updated"</span>: <span class="s2">"2020-08-31T18:51:41.191988"</span>,
+      <span class="s2">"answers_set"</span>: <span class="o">[</span>...]
+    <span class="o">}</span>,
+    <span class="o">{</span>
+      <span class="s2">"id"</span>: 2,
+      <span class="s2">"title"</span>: <span class="s2">"What shape is the circle"</span>,
+      <span class="s2">"multiple_answers"</span>: <span class="nb">false</span>,
+      <span class="s2">"created"</span>: <span class="s2">"2020-08-31T18:52:10.180814"</span>,
+      <span class="s2">"updated"</span>: <span class="s2">"2020-08-31T18:52:10.180855"</span>,
+      <span class="s2">"answers_set"</span>: <span class="o">[</span>...]
+    <span class="o">}</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+<blockquote>
+<p>Create question example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="se">\</span>
+  <span class="nt">-X</span> POST <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  <span class="nt">-d</span> <span class="s1">'
+  {
+    "title": "What color is the red cap?",
+    "multiple_answers": false
+  }
+  '</span> <span class="se">\</span>
+  http://localhost:8000/api/v0/objects/test/questions/
+</code></pre></div>
+<p>Each test can has infinite questions.</p>
+
+<p>To create question use test question endpoint</p>
+<h2 id='answers'>Answers</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/objects/test/questions/1/answers/
+
+</code></pre></div>
+<blockquote>
+<p>Success response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>  <span class="o">{</span>
+    <span class="s2">"count"</span>: 3,
+    <span class="s2">"next"</span>: null,
+    <span class="s2">"previous"</span>: null,
+    <span class="s2">"results"</span>: <span class="o">[</span>
+      <span class="o">{</span>
+        <span class="s2">"id"</span>: 1,
+        <span class="s2">"title"</span>: <span class="s2">"Red"</span>,
+        <span class="s2">"is_correct"</span>: <span class="nb">true</span>,
+        <span class="s2">"created"</span>: <span class="s2">"2020-08-31T18:52:54.659546"</span>,
+        <span class="s2">"updated"</span>: <span class="s2">"2020-08-31T18:52:54.659572"</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"id"</span>: 2,
+        <span class="s2">"title"</span>: <span class="s2">"Blue"</span>,
+        <span class="s2">"is_correct"</span>: <span class="nb">false</span>,
+        <span class="s2">"created"</span>: <span class="s2">"2020-08-31T18:53:02.952530"</span>,
+        <span class="s2">"updated"</span>: <span class="s2">"2020-08-31T18:53:02.952554"</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"id"</span>: 3,
+        <span class="s2">"title"</span>: <span class="s2">"Yellow"</span>,
+        <span class="s2">"is_correct"</span>: <span class="nb">false</span>,
+        <span class="s2">"created"</span>: <span class="s2">"2020-08-31T18:53:09.561816"</span>,
+        <span class="s2">"updated"</span>: <span class="s2">"2020-08-31T18:53:09.561838"</span>
+      <span class="o">}</span>
+    <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+<blockquote>
+<p>Create answer example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="se">\</span>
+  <span class="nt">-X</span> POST <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  <span class="nt">-d</span> <span class="s1">'
+  {
+    "title": "Red",
+    "is_correct": true
+  }
+  '</span> <span class="se">\</span>
+  http://localhost:8000/api/v0/objects/test/questions/1/answers/
+</code></pre></div>
+<p>Use test question answers ednpoint to get list of answers or create answers.</p>
+<h2 id='test-results'>Test results</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/objects/test/results/
+
+</code></pre></div>
+<blockquote>
+<p>Success response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">"id"</span>: 1,
+        <span class="s2">"test"</span>: 1,
+        <span class="s2">"user"</span>: 1,
+        <span class="s2">"questions_count"</span>: 3,
+        <span class="s2">"correct_answers"</span>: 1,
+        <span class="s2">"result"</span>: 33.33,
+        <span class="s2">"created"</span>: <span class="s2">"2020-08-31T18:56:51.486344"</span>,
+        <span class="s2">"success"</span>: <span class="nb">false</span>
+    <span class="o">}</span>,
+    <span class="o">{</span>
+        <span class="s2">"id"</span>: 2,
+        <span class="s2">"test"</span>: 1,
+        <span class="s2">"user"</span>: 1,
+        <span class="s2">"questions_count"</span>: 3,
+        <span class="s2">"correct_answers"</span>: 2,
+        <span class="s2">"result"</span>: 66.66,
+        <span class="s2">"created"</span>: <span class="s2">"2020-08-31T18:58:03.667621"</span>,
+        <span class="s2">"success"</span>: <span class="nb">false</span>
+    <span class="o">}</span>,
+    <span class="o">{</span>
+        <span class="s2">"id"</span>: 3,
+        <span class="s2">"test"</span>: 1,
+        <span class="s2">"user"</span>: 1,
+        <span class="s2">"questions_count"</span>: 3,
+        <span class="s2">"correct_answers"</span>: 3,
+        <span class="s2">"result"</span>: 100.0,
+        <span class="s2">"created"</span>: <span class="s2">"2020-08-31T19:03:11.216353"</span>,
+        <span class="s2">"success"</span>: <span class="nb">true</span>
+    <span class="o">}</span>
+<span class="o">]</span>
+</code></pre></div>
+<blockquote>
+<p>Data structure for user answers:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"&lt;question ID&gt;"</span>: <span class="s2">"&lt;answer_ID&gt;"</span>,
+  <span class="s2">"&lt;question ID&gt;"</span>: <span class="o">[</span><span class="s2">"&lt;answer_ID&gt;"</span>, <span class="s2">"&lt;answer_ID&gt;"</span><span class="o">]</span> &lt;- multiple answers
+<span class="o">}</span>
+</code></pre></div>
+<blockquote>
+<p>Send test result to API example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="se">\</span>
+  <span class="nt">-X</span> POST <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  <span class="nt">-d</span> <span class="s1">'
+  {
+    "1": "4",
+    "2": "5",
+    "3": ["12", "13"]
+  }
+  '</span> <span class="se">\</span>
+  http://localhost:8000/api/v0/objects/test/results/
+</code></pre></div>
+<p>Use test results endpoint verify users answers.</p>
+
+<p><strong>Notes:</strong></p>
+
+<ul>
+<li>If test is not available for user, endpoint will return 403 for POST request.</li>
+</ul>
+<h2 id='test-certificates'>Test Certificates</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/objects/test/results/certificate/
+
+</code></pre></div>
+<p>If user has successfull test result, he can get certificate using test certificate ednpoint.</p>
+
+<p><strong>Notes:</strong></p>
+
+<ul>
+<li>If user hasn&#39;t test result with &quot;success&quot; = true, certificate endpoint will return code 404.</li>
+</ul>
 <h1 id='events'>Events</h1><h2 id='endpoints-4'>Endpoints</h2>
 <blockquote>
 <p>Get events list example:</p>
@@ -1168,25 +1431,31 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
           <span class="s2">"id"</span>: 1,
           <span class="s2">"name"</span>: <span class="s2">"Event in Kyiv"</span>,
           <span class="s2">"description"</span>: <span class="s2">"Event description"</span>,
+          <span class="s2">"place"</span>: <span class="s2">"Kyiv"</span>,
           <span class="s2">"certificate_template"</span>: 1,
           <span class="s2">"start_date"</span>: <span class="s2">"2019-09-15T14:00:00"</span>,
           <span class="s2">"end_date"</span>: <span class="s2">"2019-09-15T15:00:00"</span>,
           <span class="s2">"testing_end_date"</span>: <span class="s2">"2019-09-15T16:00:00"</span>,
           <span class="s2">"image"</span>: <span class="s2">"http://example.com/...png"</span>,
           <span class="s2">"text"</span>: <span class="s2">"Full event text"</span>,
-          <span class="s2">"youtube_link"</span>: <span class="s2">"https://youtube.com/..."</span>
+          <span class="s2">"youtube_id"</span>: <span class="s2">"www3ssasa"</span>
+          <span class="s2">"success_percent"</span>: 70.0,
+          <span class="s2">"max_tries"</span>: 0
         <span class="o">}</span>,
         <span class="o">{</span>
-            <span class="s2">"id"</span>: 2,
-            <span class="s2">"name"</span>: <span class="s2">"Event in Lviv"</span>,
-            <span class="s2">"description"</span>: <span class="s2">"Event description"</span>,
-            <span class="s2">"certificate_template"</span>: 2,
-            <span class="s2">"start_date"</span>: <span class="s2">"2019-09-15T14:00:00"</span>,
-            <span class="s2">"end_date"</span>: <span class="s2">"2019-09-15T15:00:00"</span>,
-            <span class="s2">"testing_end_date"</span>: <span class="s2">"2019-09-15T16:00:00"</span>,
-            <span class="s2">"image"</span>: <span class="s2">"http://example.com/...png"</span>,
-            <span class="s2">"text"</span>: <span class="s2">"Full event text"</span>,
-            <span class="s2">"youtube_link"</span>: <span class="s2">"https://youtube.com/..."</span>
+          <span class="s2">"id"</span>: 2,
+          <span class="s2">"name"</span>: <span class="s2">"Event in Lviv and Ternopil"</span>,
+          <span class="s2">"description"</span>: <span class="s2">"Event description"</span>,
+          <span class="s2">"place"</span>: <span class="s2">"Lviv, Ternopil"</span>,
+          <span class="s2">"certificate_template"</span>: 2,
+          <span class="s2">"start_date"</span>: <span class="s2">"2019-09-15T14:00:00"</span>,
+          <span class="s2">"end_date"</span>: <span class="s2">"2019-09-15T15:00:00"</span>,
+          <span class="s2">"testing_end_date"</span>: <span class="s2">"2019-09-15T16:00:00"</span>,
+          <span class="s2">"image"</span>: <span class="s2">"http://example.com/...png"</span>,
+          <span class="s2">"text"</span>: <span class="s2">"Full event text"</span>,
+          <span class="s2">"youtube_id"</span>: <span class="s2">"www2ddase"</span>,
+          <span class="s2">"success_percent"</span>: 80.0,
+          <span class="s2">"max_tries"</span>: 2
         <span class="o">}</span>
     <span class="o">]</span>
 <span class="o">}</span>
@@ -1210,8 +1479,18 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 </tr>
 <tr>
 <td>/events/{ID}/test/</td>
-<td>GET</td>
+<td>GET, POST</td>
 <td>Event test instance details.</td>
+</tr>
+<tr>
+<td>/events/{ID}/test/results/</td>
+<td>GET, POST</td>
+<td>Event test results list.</td>
+</tr>
+<tr>
+<td>/events/{ID}/test/results/certificate/</td>
+<td>GET</td>
+<td>Event test certificate.</td>
 </tr>
 <tr>
 <td>/events/{ID}/test/questions/</td>
@@ -1242,6 +1521,9 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 <th>Is required</th>
 <th>Read only</th>
 <th>Default value</th>
+<th>Ordering</th>
+<th>Filtering</th>
+<th>Searching</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1250,6 +1532,9 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 <td>yes</td>
 <td>no</td>
 <td></td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
 </tr>
 <tr>
 <td>description</td>
@@ -1257,6 +1542,9 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 <td>yes</td>
 <td>no</td>
 <td></td>
+<td>+</td>
+<td></td>
+<td>+</td>
 </tr>
 <tr>
 <td>text</td>
@@ -1264,12 +1552,28 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 <td>yes</td>
 <td>no</td>
 <td></td>
+<td>+</td>
+<td></td>
+<td>+</td>
+</tr>
+<tr>
+<td>place</td>
+<td>string</td>
+<td>no</td>
+<td>no</td>
+<td></td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
 </tr>
 <tr>
 <td>certificate_template</td>
 <td>int (ID)</td>
 <td>no</td>
 <td>no</td>
+<td></td>
+<td></td>
+<td></td>
 <td></td>
 </tr>
 <tr>
@@ -1278,12 +1582,18 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 <td>no</td>
 <td>no</td>
 <td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td>start_date</td>
 <td>datetime</td>
 <td>yes</td>
 <td>no</td>
+<td></td>
+<td>+</td>
+<td>+</td>
 <td></td>
 </tr>
 <tr>
@@ -1292,12 +1602,18 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 <td>yes</td>
 <td>no</td>
 <td></td>
+<td>+</td>
+<td>+</td>
+<td></td>
 </tr>
 <tr>
 <td>testing_end_date</td>
 <td>datetime</td>
 <td>yes</td>
 <td>no</td>
+<td></td>
+<td>+</td>
+<td>+</td>
 <td></td>
 </tr>
 <tr>
@@ -1306,6 +1622,9 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 <td>yes</td>
 <td>no</td>
 <td>true</td>
+<td>+</td>
+<td>+</td>
+<td></td>
 </tr>
 <tr>
 <td>private</td>
@@ -1313,12 +1632,38 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 <td>yes</td>
 <td>no</td>
 <td>false</td>
+<td>+</td>
+<td>+</td>
+<td></td>
 </tr>
 <tr>
-<td>youtube_link</td>
+<td>youtube_id</td>
 <td>string</td>
 <td>no</td>
 <td>no</td>
+<td></td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
+</tr>
+<tr>
+<td>success_percent</td>
+<td>float</td>
+<td>yes</td>
+<td>no</td>
+<td>70.0</td>
+<td>+</td>
+<td>+</td>
+<td></td>
+</tr>
+<tr>
+<td>max_tries</td>
+<td>int</td>
+<td>yes</td>
+<td>no</td>
+<td>0</td>
+<td>+</td>
+<td>+</td>
 <td></td>
 </tr>
 <tr>
@@ -1327,12 +1672,18 @@ When user will visit confirmation link - <strong>email_confirmed</strong> field 
 <td>yes</td>
 <td>yes</td>
 <td></td>
+<td>+</td>
+<td>+</td>
+<td></td>
 </tr>
 <tr>
 <td>updated</td>
 <td>datetime</td>
 <td>yes</td>
 <td>yes</td>
+<td></td>
+<td>+</td>
+<td>+</td>
 <td></td>
 </tr>
 </tbody></table>
