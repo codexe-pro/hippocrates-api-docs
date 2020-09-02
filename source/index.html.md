@@ -33,7 +33,7 @@ The API is versioned, in order to support backwards-incompatible changes. The cu
 
 Base URLs:
 
-Sandbox: [http://46.101.235.194/api/v0/](http://46.101.235.194/api/v0/)<br />
+Sandbox: [https://sandbox-api.hippocrates.org.ua/api/v0/](https://sandbox-api.hippocrates.org.ua/api/v0/)<br />
 Production: -
 
 ## HTTP Verbs
@@ -317,6 +317,33 @@ curl -X GET http://localhost:8000/api/v0/objects/?some_field=value&other_field=v
 To filter object list you can use filter field name as URL param. <br />
 Fields that can be used to filter list you can find in **'Filtering'** column of data table for each object type.
 
+## Filtering by date
+
+> Get objects where start date greater than or equal to 2020-09-10T00:00 example:
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/?start_date__gte=2020-09-10T00:00
+
+```
+
+Filtering by dates is flexible. You can use double underscore **'__'** prefix in the end of field name with comparison abbreviation to compare values.
+
+Available comparison prefixes:
+
+* **gt** - greater than
+* **lt** - less than
+* **gte** - greater than or equal to
+* **lte** - less than or equal to
+
+Also you can use **range** prefix to get objects in selected date range
+
+> Get objects where start date in range from 2020-09-01T00:00 to 2020-09-30T00:00:
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/?start_date__range=2020-09-01T00:00,2020-09-30T00:00
+
+```
+
 ## Searching
 
 > Simple search example:
@@ -478,6 +505,249 @@ specialization | int | yes | no | [Specializations](#specializations) object ID
 email_confirmed | bolean | yes  | yes | | + | + |
 
 
+# Testing
+
+Events, Courses, Courses lessons and Webinars can has testing that user can pass.<br />
+Objects that have connected tests can have settings fields for testings like:
+
+* **success_percent** - indicates what percentage of correct answers must be for the test to be considered successful. **Default value for the platform is 70.0%**
+* **max_tries** - indicates how much times user able to retry test. **If max_tries equal to zero - it means that user can retry test infinite times.**
+
+## Test object
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/test/
+
+```
+
+> Success response:
+
+```shell
+{
+  "id": 1, 
+  "created": "2020-08-31T18:47:28.818181",
+  "questions_set": [...],
+  "success_percent": 70.0,
+  "max_tries": 3,
+  "user_statistics": {
+      "tries": 2,
+      "test_available": true
+  }
+} 
+```
+
+> Create test example:
+
+```shell
+curl -X POST http://localhost:8000/api/v0/objects/test/
+
+```
+
+> Success response will return code 201 and test object.
+
+Use object test detail endpoint to get test object, test setting sand users statistics or to create it (usint POST method).
+
+User statistics show how much tries user used and is test available.
+
+## Questions
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/test/questions/
+
+```
+
+> Success response:
+
+```shell
+{
+  "count": 3,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "title": "What color is the red cap?",
+      "multiple_answers": false,
+      "created": "2020-08-31T18:51:41.191955",
+      "updated": "2020-08-31T18:51:41.191988",
+      "answers_set": [...]
+    },
+    {
+      "id": 2,
+      "title": "What shape is the circle",
+      "multiple_answers": false,
+      "created": "2020-08-31T18:52:10.180814",
+      "updated": "2020-08-31T18:52:10.180855",
+      "answers_set": [...]
+    }
+  ]
+}
+```
+
+> Create question example:
+
+```shell
+curl \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '
+  {
+    "title": "What color is the red cap?",
+    "multiple_answers": false
+  }
+  ' \
+  http://localhost:8000/api/v0/objects/test/questions/
+```
+
+Each test can has infinite questions.
+
+To create question use test question endpoint
+
+## Answers 
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/test/questions/1/answers/
+
+```
+
+> Success response:
+
+```shell
+  {
+    "count": 3,
+    "next": null,
+    "previous": null,
+    "results": [
+      {
+        "id": 1,
+        "title": "Red",
+        "is_correct": true,
+        "created": "2020-08-31T18:52:54.659546",
+        "updated": "2020-08-31T18:52:54.659572"
+      },
+      {
+        "id": 2,
+        "title": "Blue",
+        "is_correct": false,
+        "created": "2020-08-31T18:53:02.952530",
+        "updated": "2020-08-31T18:53:02.952554"
+      },
+      {
+        "id": 3,
+        "title": "Yellow",
+        "is_correct": false,
+        "created": "2020-08-31T18:53:09.561816",
+        "updated": "2020-08-31T18:53:09.561838"
+      }
+    ]
+}
+```
+
+> Create answer example:
+
+```shell
+curl \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '
+  {
+    "title": "Red",
+    "is_correct": true
+  }
+  ' \
+  http://localhost:8000/api/v0/objects/test/questions/1/answers/
+```
+
+Use test question answers ednpoint to get list of answers or create answers.
+
+## Test results
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/test/results/
+
+```
+
+> Success response:
+
+```shell
+[
+    {
+        "id": 1,
+        "test": 1,
+        "user": 1,
+        "questions_count": 3,
+        "correct_answers": 1,
+        "result": 33.33,
+        "created": "2020-08-31T18:56:51.486344",
+        "success": false
+    },
+    {
+        "id": 2,
+        "test": 1,
+        "user": 1,
+        "questions_count": 3,
+        "correct_answers": 2,
+        "result": 66.66,
+        "created": "2020-08-31T18:58:03.667621",
+        "success": false
+    },
+    {
+        "id": 3,
+        "test": 1,
+        "user": 1,
+        "questions_count": 3,
+        "correct_answers": 3,
+        "result": 100.0,
+        "created": "2020-08-31T19:03:11.216353",
+        "success": true
+    }
+]
+```
+
+> Data structure for user answers:
+
+```shell
+{
+  "<question ID>": "<answer_ID>",
+  "<question ID>": ["<answer_ID>", "<answer_ID>"] <- multiple answers
+}
+```
+
+> Send test result to API example:
+
+```shell
+curl \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '
+  {
+    "1": "4",
+    "2": "5",
+    "3": ["12", "13"]
+  }
+  ' \
+  http://localhost:8000/api/v0/objects/test/results/
+```
+
+Use test results endpoint verify users answers.
+
+**Notes:**
+
+* If test is not available for user, endpoint will return 403 for POST request.
+
+## Test Certificates
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/test/results/certificate/
+
+```
+
+If user has successfull test result, he can get certificate using test certificate ednpoint.
+
+**Notes:**
+
+* If user hasn't test result with "success" = true, certificate endpoint will return code 404.
+
 # Events
 
 ## Endpoints
@@ -494,25 +764,31 @@ email_confirmed | bolean | yes  | yes | | + | + |
           "id": 1,
           "name": "Event in Kyiv",
           "description": "Event description",
+          "place": "Kyiv",
           "certificate_template": 1,
           "start_date": "2019-09-15T14:00:00",
           "end_date": "2019-09-15T15:00:00",
           "testing_end_date": "2019-09-15T16:00:00",
           "image": "http://example.com/...png",
           "text": "Full event text",
-          "youtube_link": "https://youtube.com/..."
+          "youtube_id": "www3ssasa"
+          "success_percent": 70.0,
+          "max_tries": 0
         },
         {
-            "id": 2,
-            "name": "Event in Lviv",
-            "description": "Event description",
-            "certificate_template": 2,
-            "start_date": "2019-09-15T14:00:00",
-            "end_date": "2019-09-15T15:00:00",
-            "testing_end_date": "2019-09-15T16:00:00",
-            "image": "http://example.com/...png",
-            "text": "Full event text",
-            "youtube_link": "https://youtube.com/..."
+          "id": 2,
+          "name": "Event in Lviv and Ternopil",
+          "description": "Event description",
+          "place": "Lviv, Ternopil",
+          "certificate_template": 2,
+          "start_date": "2019-09-15T14:00:00",
+          "end_date": "2019-09-15T15:00:00",
+          "testing_end_date": "2019-09-15T16:00:00",
+          "image": "http://example.com/...png",
+          "text": "Full event text",
+          "youtube_id": "www2ddase",
+          "success_percent": 80.0,
+          "max_tries": 2
         }
     ]
 }
@@ -522,7 +798,9 @@ Endpoint | Methods | Description
 -------------- | -------------- | --------------
 /events/ | GET, POST | Events list endpoint.
 /events/{ID}/ | GET, PUT, PATCH | Event details.
-/events/{ID}/test/ | GET | Event test instance details.
+/events/{ID}/test/ | GET, POST | Event test instance details.
+/events/{ID}/test/results/ | GET, POST | Event test results list.
+/events/{ID}/test/results/certificate/ | GET | Event test certificate.
 /events/{ID}/test/questions/ | GET, POST | Test questions list.
 /events/{ID}/test/questions/{ID}/ | GET, PUT, PATCH | Test question details.
 /events/{ID}/test/questions/{ID}/answers/ | GET, POST | Test question answers list.
@@ -531,18 +809,21 @@ Endpoint | Methods | Description
 
 ## Data
 
-Field name | Type | Is required | Read only | Default value
--------------- | -------------- | -------------- | -------------- | --------------
-name | string | yes | no
-description | string | yes | no
-text | string | yes | no
-certificate_template | int (ID) | no | no
-image | file / image url | no | no
-start_date | datetime | yes | no 
-end_date | datetime | yes | no 
-testing_end_date | datetime | yes | no
-is_draft | boolean | yes | no | true
-private | boolean | yes | no | false
-youtube_link | string | no | no
-created | datetime | yes | yes
-updated | datetime | yes | yes
+Field name | Type | Is required | Read only | Default value | Ordering | Filtering | Searching
+-------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | --------------
+name | string | yes | no | | + | + | + |
+description | string | yes | no | | + | | + |
+text | string | yes | no | | + | | + |
+place | string | no | no | | + | + | + |
+certificate_template | int (ID) | no | no | |
+image | file / image url | no | no | |
+start_date | datetime | yes | no | | + | + |
+end_date | datetime | yes | no | | + | + | 
+testing_end_date | datetime | yes | no | | + | + | |
+is_draft | boolean | yes | no | true | + | + | |
+private | boolean | yes | no | false | + | + | | 
+youtube_id | string | no | no | | + | + | + |
+success_percent | float | yes | no | 70.0 | + | + | |
+max_tries | int | yes | no | 0 | + | + | |
+created | datetime | yes | yes | | + | + | |
+updated | datetime | yes | yes | | + | + | |
