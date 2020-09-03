@@ -798,6 +798,8 @@ Endpoint | Methods | Description
 -------------- | -------------- | --------------
 /events/ | GET, POST | Events list endpoint.
 /events/{ID}/ | GET, PUT, PATCH | Event details.
+/events/{ID}/register/ | POST | Event registration endpoint.
+/events/{ID}/register/check/ | GET | Event check registration endpoint.
 /events/{ID}/test/ | GET, POST | Event test instance details.
 /events/{ID}/test/results/ | GET, POST | Event test results list.
 /events/{ID}/test/results/certificate/ | GET | Event test certificate.
@@ -827,3 +829,28 @@ success_percent | float | yes | no | 70.0 | + | + | |
 max_tries | int | yes | no | 0 | + | + | |
 created | datetime | yes | yes | | + | + | |
 updated | datetime | yes | yes | | + | + | |
+
+
+## Event Registration
+
+> Event registration example. If user is successfully registered will be returned code 200.
+
+```shell
+curl -X POST http://localhost:8000/api/v0/events/1/register/
+
+```
+
+> Check registration example:
+
+```shell
+curl -X GET http://localhost:8000/api/v0/events/1/register/check/
+
+```
+
+If event is **private** (**private=true**) user do not have access to youtube video before he registers.
+
+To get access to the youtube video user should do registration using event registration endpoint. If user is already registered or event is no private you will recieve code 400.
+
+For anonymous users the platform will remember client by their IP address.
+
+You can check users registration using event check registration endpoint. If uses is registered you will recieve code 200, esle if user is not registered or event is not private you will recieve code 404.
