@@ -906,6 +906,8 @@ created | datetime | yes | yes | | + | + | |
 Endpoint | Methods | Description
 -------------- | -------------- | --------------
 /content/hippocrates/main/ | GET, PUT, PATCH | Main information.
+/content/hippocrates/main/phones/ | GET, POST | Contact phones list.
+/content/hippocrates/main/phones/{ID}/ | PUT, PATCH, DELETE | Contact phones detail.
 /content/hippocrates/home/ | GET, PUT, PATCH | Home page content.
 /content/hippocrates/projects/ | GET, PUT, PATCH | Projects page content.
 /content/hippocrates/contacts/ | GET, PUT, PATCH | Contacts page content.
