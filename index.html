@@ -416,6 +416,17 @@
               </ul>
           </li>
           <li>
+            <a href="#subscriptions" class="toc-h1 toc-link" data-title="Subscriptions">Subscriptions</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#endpoints-5" class="toc-h2 toc-link" data-title="Endpoints">Endpoints</a>
+                  </li>
+                  <li>
+                    <a href="#data-4" class="toc-h2 toc-link" data-title="Data">Data</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
           </li>
       </ul>
@@ -1600,6 +1611,16 @@ Objects that have connected tests can have settings fields for testings like:</p
 <td></td>
 </tr>
 <tr>
+<td>event_plan</td>
+<td>file / file url</td>
+<td>no</td>
+<td>no</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td>start_date</td>
 <td>datetime</td>
 <td>yes</td>
@@ -1720,6 +1741,76 @@ Objects that have connected tests can have settings fields for testings like:</p
 <p>For anonymous users the platform will remember client by their IP address.</p>
 
 <p>You can check users registration using event check registration endpoint. If uses is registered you will recieve code 200, esle if user is not registered or event is not private you will recieve code 404.</p>
+<h1 id='subscriptions'>Subscriptions</h1>
+<p>Subscriptions are used to collect email addresses that can be used for mailing.</p>
+<h2 id='endpoints-5'>Endpoints</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/subscriptions/
+
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
+    <span class="s2">"count"</span>: 1,
+    <span class="s2">"next"</span>: null,
+    <span class="s2">"previous"</span>: null,
+    <span class="s2">"results"</span>: <span class="o">[</span>
+        <span class="o">{</span>
+            <span class="s2">"id"</span>: 1,
+            <span class="s2">"email"</span>: <span class="s2">"codexe.pro@gmail.com"</span>,
+            <span class="s2">"created"</span>: <span class="s2">"2020-09-03T15:03:35.846496"</span>
+        <span class="o">}</span>
+    <span class="o">]</span>
+<span class="o">}</span>
+
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Endpoint</th>
+<th>Methods</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>/subscriptions/</td>
+<td>GET, POST</td>
+<td>Subscriptions list endpoint.</td>
+</tr>
+<tr>
+<td>/subscriptions/{ID}/</td>
+<td>GET, PUT, PATCH</td>
+<td>Subscription details.</td>
+</tr>
+</tbody></table>
+<h2 id='data-4'>Data</h2>
+<table><thead>
+<tr>
+<th>Field name</th>
+<th>Type</th>
+<th>Is required</th>
+<th>Read only</th>
+<th>Default value</th>
+<th>Ordering</th>
+<th>Filtering</th>
+<th>Searching</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>yes</td>
+<td>no</td>
+<td></td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
+</tr>
+<tr>
+<td>created</td>
+<td>datetime</td>
+<td>yes</td>
+<td>yes</td>
+<td></td>
+<td>+</td>
+<td>+</td>
+<td></td>
+</tr>
+</tbody></table>
 <h1 id='errors'>Errors</h1>
 <aside class="notice">
 This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
