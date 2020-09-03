@@ -819,6 +819,7 @@ text | string | yes | no | | + | | + |
 place | string | no | no | | + | + | + |
 certificate_template | int (ID) | no | no | |
 image | file / image url | no | no | |
+event_plan | file / file url | no | no | |
 start_date | datetime | yes | no | | + | + |
 end_date | datetime | yes | no | | + | + | 
 testing_end_date | datetime | yes | no | | + | + | |
@@ -854,3 +855,43 @@ To get access to the youtube video user should do registration using event regis
 For anonymous users the platform will remember client by their IP address.
 
 You can check users registration using event check registration endpoint. If uses is registered you will recieve code 200, esle if user is not registered or event is not private you will recieve code 404.
+
+
+# Subscriptions
+
+Subscriptions are used to collect email addresses that can be used for mailing.
+
+## Endpoints
+
+```shell
+curl -X GET http://localhost:8000/api/v0/subscriptions/
+
+```
+
+```shell
+{
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "email": "codexe.pro@gmail.com",
+            "created": "2020-09-03T15:03:35.846496"
+        }
+    ]
+}
+
+```
+
+Endpoint | Methods | Description
+-------------- | -------------- | --------------
+/subscriptions/ | GET, POST | Subscriptions list endpoint.
+/subscriptions/{ID}/ | GET, PUT, PATCH | Subscription details.
+
+## Data
+
+Field name | Type | Is required | Read only | Default value | Ordering | Filtering | Searching
+-------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | --------------
+email | string | yes | no | | + | + | + |
+created | datetime | yes | yes | | + | + | |
