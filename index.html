@@ -410,6 +410,9 @@
                   <li>
                     <a href="#data-3" class="toc-h2 toc-link" data-title="Data">Data</a>
                   </li>
+                  <li>
+                    <a href="#event-registration" class="toc-h2 toc-link" data-title="Event Registration">Event Registration</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -1478,6 +1481,16 @@ Objects that have connected tests can have settings fields for testings like:</p
 <td>Event details.</td>
 </tr>
 <tr>
+<td>/events/{ID}/register/</td>
+<td>POST</td>
+<td>Event registration endpoint.</td>
+</tr>
+<tr>
+<td>/events/{ID}/register/check/</td>
+<td>GET</td>
+<td>Event check registration endpoint.</td>
+</tr>
+<tr>
 <td>/events/{ID}/test/</td>
 <td>GET, POST</td>
 <td>Event test instance details.</td>
@@ -1687,6 +1700,26 @@ Objects that have connected tests can have settings fields for testings like:</p
 <td></td>
 </tr>
 </tbody></table>
+<h2 id='event-registration'>Event Registration</h2>
+<blockquote>
+<p>Event registration example. If user is successfully registered will be returned code 200.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST http://localhost:8000/api/v0/events/1/register/
+
+</code></pre></div>
+<blockquote>
+<p>Check registration example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/events/1/register/check/
+
+</code></pre></div>
+<p>If event is <strong>private</strong> (<strong>private=true</strong>) user do not have access to youtube video before he registers.</p>
+
+<p>To get access to the youtube video user should do registration using event registration endpoint. If user is already registered or event is no private you will recieve code 400.</p>
+
+<p>For anonymous users the platform will remember client by their IP address.</p>
+
+<p>You can check users registration using event check registration endpoint. If uses is registered you will recieve code 200, esle if user is not registered or event is not private you will recieve code 404.</p>
 <h1 id='errors'>Errors</h1>
 <aside class="notice">
 This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
