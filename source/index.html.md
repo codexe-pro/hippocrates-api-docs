@@ -895,3 +895,17 @@ Field name | Type | Is required | Read only | Default value | Ordering | Filteri
 -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | --------------
 email | string | yes | no | | + | + | + |
 created | datetime | yes | yes | | + | + | |
+
+
+# Content
+
+## Hippocrates Website Content
+
+### Endpoints
+
+Endpoint | Methods | Description
+-------------- | -------------- | --------------
+/content/hippocrates/main/ | GET, PUT, PATCH | Main information.
+/content/hippocrates/home/ | GET, PUT, PATCH | Home page content.
+/content/hippocrates/projects/ | GET, PUT, PATCH | Projects page content.
+/content/hippocrates/contacts/ | GET, PUT, PATCH | Contacts page content.
