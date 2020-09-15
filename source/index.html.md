@@ -748,6 +748,218 @@ If user has successfull test result, he can get certificate using test certifica
 
 * If user hasn't test result with "success" = true, certificate endpoint will return code 404.
 
+
+# Polls
+Polls - are similar to Test objects, but polls can be passed only once by user and have no marks/certificates.<br />
+Polls used to store statistics for platform clients.<br />
+
+## Poll object
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/poll/
+
+```
+
+> Success response:
+
+```shell
+{
+  "id": 1, 
+  "created": "2020-08-31T18:47:28.818181",
+  "questions_set": [...]
+} 
+```
+
+> Create poll example:
+
+```shell
+curl -X POST http://localhost:8000/api/v0/objects/poll/
+
+```
+
+> Success response will return code 201 and test object.
+
+Use object poll detail endpoint to get poll object or to create it (usint POST method).
+
+## Questions
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/poll/questions/
+
+```
+
+> Success response:
+
+```shell
+{
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "title": "What color is the red cap?",
+      "multiple_answers": false,
+      "created": "2020-08-31T18:51:41.191955",
+      "updated": "2020-08-31T18:51:41.191988",
+      "answers_set": [...]
+    }
+  ]
+}
+```
+
+> Create question example:
+
+```shell
+curl \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '
+  {
+    "title": "What color is the red cap?",
+    "multiple_answers": false
+  }
+  ' \
+  http://localhost:8000/api/v0/objects/poll/questions/
+```
+
+Each poll can has infinite questions.
+
+To create question use poll question endpoint
+
+## Answers 
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/poll/questions/1/answers/
+
+```
+
+> Success response:
+
+```shell
+  {
+    "count": 3,
+    "next": null,
+    "previous": null,
+    "results": [
+      {
+        "id": 1,
+        "title": "Red",
+        "is_correct": true,
+        "created": "2020-08-31T18:52:54.659546",
+        "updated": "2020-08-31T18:52:54.659572"
+      },
+      {
+        "id": 2,
+        "title": "Blue",
+        "is_correct": false,
+        "created": "2020-08-31T18:53:02.952530",
+        "updated": "2020-08-31T18:53:02.952554"
+      },
+      {
+        "id": 3,
+        "title": "Yellow",
+        "is_correct": false,
+        "created": "2020-08-31T18:53:09.561816",
+        "updated": "2020-08-31T18:53:09.561838"
+      }
+    ]
+}
+```
+
+> Create answer example:
+
+```shell
+curl \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '
+  {
+    "title": "Red",
+    "is_correct": true
+  }
+  ' \
+  http://localhost:8000/api/v0/objects/poll/questions/1/answers/
+```
+
+Use poll question answers ednpoint to get list of answers or create answers.
+
+## Test results
+
+```shell
+curl -X GET http://localhost:8000/api/v0/objects/poll/results/
+
+```
+
+> Success response:
+
+```shell
+[
+    {
+        "id": 1,
+        "test": 1,
+        "user": 1,
+        "questions_count": 3,
+        "correct_answers": 1,
+        "result": 33.33,
+        "created": "2020-08-31T18:56:51.486344",
+        "success": false
+    },
+    {
+        "id": 2,
+        "test": 1,
+        "user": 1,
+        "questions_count": 3,
+        "correct_answers": 2,
+        "result": 66.66,
+        "created": "2020-08-31T18:58:03.667621",
+        "success": false
+    },
+    {
+        "id": 3,
+        "test": 1,
+        "user": 1,
+        "questions_count": 3,
+        "correct_answers": 3,
+        "result": 100.0,
+        "created": "2020-08-31T19:03:11.216353",
+        "success": true
+    }
+]
+```
+
+> Data structure for user answers:
+
+```shell
+{
+  "<question ID>": "<answer_ID>",
+  "<question ID>": ["<answer_ID>", "<answer_ID>"] <- multiple answers
+}
+```
+
+> Send test result to API example:
+
+```shell
+curl \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '
+  {
+    "1": "4",
+    "2": "5",
+    "3": ["12", "13"]
+  }
+  ' \
+  http://localhost:8000/api/v0/objects/test/results/
+```
+
+Use poll results endpoint to send poll result.
+
+**Notes:**
+
+* If poll is not available for user, endpoint will return 403 for POST request.
+
+
 # Events
 
 ## Endpoints
@@ -769,9 +981,11 @@ If user has successfull test result, he can get certificate using test certifica
           "start_date": "2019-09-15T14:00:00",
           "end_date": "2019-09-15T15:00:00",
           "testing_end_date": "2019-09-15T16:00:00",
+          "is_draft": false,
           "image": "http://example.com/...png",
           "text": "Full event text",
-          "youtube_id": "www3ssasa"
+          "youtube_id": "www3ssasa",
+          "private": true,
           "success_percent": 70.0,
           "max_tries": 0
         },
@@ -784,9 +998,11 @@ If user has successfull test result, he can get certificate using test certifica
           "start_date": "2019-09-15T14:00:00",
           "end_date": "2019-09-15T15:00:00",
           "testing_end_date": "2019-09-15T16:00:00",
+          "is_draft": false,
           "image": "http://example.com/...png",
           "text": "Full event text",
           "youtube_id": "www2ddase",
+          "private": true,
           "success_percent": 80.0,
           "max_tries": 2
         }
@@ -855,6 +1071,107 @@ To get access to the youtube video user should do registration using event regis
 For anonymous users the platform will remember client by their IP address.
 
 You can check users registration using event check registration endpoint. If uses is registered you will recieve code 200, esle if user is not registered or event is not private you will recieve code 404.
+
+
+# Webinars
+
+## Endpoints
+
+> Get webinars list example:
+
+```shell
+{
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+          "id": 1,
+          "name": "How to become a doctor",
+          "description": "Webinar description",
+          "certificate_template": 1,
+          "start_date": "2019-09-15T14:00:00",
+          "end_date": "2019-09-15T15:00:00",
+          "testing_end_date": "2019-09-15T16:00:00",
+          "is_draft": false,
+          "image": "http://example.com/...png",
+          "text": "Full text",
+          "private": true,
+          "youtube_id": "www3ssasa",
+          "success_percent": 80.0,
+          "max_tries": 2
+          
+        }
+    ]
+}
+```
+
+Endpoint | Methods | Description
+-------------- | -------------- | --------------
+/webinars/ | GET, POST | Webinars list endpoint.
+/webinars/{ID}/ | GET, PUT, PATCH | Webinar details.
+/webinars/{ID}/register/ | POST | Webinar registration endpoint.
+/webinars/{ID}/register/check/ | GET | Webinar check registration endpoint.
+/webinars/{ID}/test/ | GET, POST | Webinar test instance details.
+/webinars/{ID}/test/results/ | GET, POST | Webinar test results list.
+/webinars/{ID}/test/results/certificate/ | GET | Webinar test certificate.
+/webinars/{ID}/test/questions/ | GET, POST | Test questions list.
+/webinars/{ID}/test/questions/{ID}/ | GET, PUT, PATCH | Test question details.
+/webinars/{ID}/test/questions/{ID}/answers/ | GET, POST | Test question answers list.
+/webinars/{ID}/test/questions/{ID}/answers/{ID}/ | GET, PUT, PATCH | Test question answers detail.
+/webinars/{ID}/poll/results/ | GET, POST | Webinar poll results list.
+/webinars/{ID}/poll/questions/ | GET, POST | Poll questions list.
+/webinars/{ID}/poll/questions/{ID}/ | GET, PUT, PATCH | Poll question details.
+/webinars/{ID}/poll/questions/{ID}/answers/ | GET, POST | Poll question answers list.
+/webinars/{ID}/poll/questions/{ID}/answers/{ID}/ | GET, PUT, PATCH | Poll question answers detail.
+
+
+## Data
+
+Field name | Type | Is required | Read only | Default value | Ordering | Filtering | Searching
+-------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | --------------
+name | string | yes | no | | + | + | + |
+description | string | yes | no | | + | | + |
+text | string | yes | no | | + | | + |
+certificate_template | int (ID) | no | no | |
+image | file / image url | no | no | |
+event_plan | file / file url | no | no | |
+start_date | datetime | yes | no | | + | + |
+end_date | datetime | yes | no | | + | + | 
+testing_end_date | datetime | yes | no | | + | + | |
+is_draft | boolean | yes | no | true | + | + | |
+private | boolean | yes | no | false | + | + | | 
+youtube_id | string | no | no | | + | + | + |
+success_percent | float | yes | no | 70.0 | + | + | |
+max_tries | int | yes | no | 0 | + | + | |
+created | datetime | yes | yes | | + | + | |
+updated | datetime | yes | yes | | + | + | |
+
+
+## Webinar Registration
+
+> Webinar registration example. If user is successfully registered will be returned code 200.
+
+```shell
+curl -X POST http://localhost:8000/api/v0/webinars/1/register/
+
+```
+
+> Check registration example:
+
+```shell
+curl -X GET http://localhost:8000/api/v0/webinars/1/register/check/
+
+```
+
+If webinar is **private** (**private=true**) user do not have access to youtube video before he registers.
+
+To get access to the youtube video user should do registration using event registration endpoint. If user is already registered or webinar is no private you will recieve code 400.
+
+For anonymous users the platform will remember client by their IP address.
+
+You can check users registration using webinar check registration endpoint. If uses is registered you will recieve code 200, esle if user is not registered or event is not private you will recieve code 404.
+
 
 
 # Subscriptions
