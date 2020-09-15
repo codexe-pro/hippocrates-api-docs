@@ -766,7 +766,10 @@ curl -X GET http://localhost:8000/api/v0/objects/poll/
 {
   "id": 1, 
   "created": "2020-08-31T18:47:28.818181",
-  "questions_set": [...]
+  "questions_set": [...],
+  "users_statistics": {
+    "poll_available": true
+  }
 } 
 ```
 
