@@ -1222,14 +1222,16 @@ Endpoint | Methods | Description
 /courses/ | GET, POST | COurse list endpoint.
 /courses/{ID}/ | GET, PUT, PATCH | Course details.
 /courses/{ID}/test/ | GET, POST | Course test instance details.
-/courses/{ID}/test/results/ | GET, POST | Webinar test results list.
-/courses/{ID}/test/results/certificate/ | GET | Webinar test certificate.
+/courses/{ID}/test/results/ | GET, POST | Course test results list.
+/courses/{ID}/test/results/certificate/ | GET | Course test certificate.
 /courses/{ID}/test/questions/ | GET, POST | Test questions list.
 /courses/{ID}/test/questions/{ID}/ | GET, PUT, PATCH | Test question details.
 /courses/{ID}/test/questions/{ID}/answers/ | GET, POST | Test question answers list.
 /courses/{ID}/test/questions/{ID}/answers/{ID}/ | GET, PUT, PATCH | Test question answers detail.
 /courses/{ID}/lessons/ | GET, POST | Course lessons list endpoint.
 /courses/{ID}/lessons/{ID}/ | GET, PUT, PATCH | Course lesson details.
+/courses/{ID}/lessons/{ID}/files/ | GET, PUT, PATCH | Lesson attached files list.
+/courses/{ID}/lessons/{ID}/files/{ID}/ | GET, PUT, PATCH | Lesson attached file detail.
 /courses/{ID}/lessons/{ID}/test/ | GET, POST | Lesson test instance details.
 /courses/{ID}/lessons/{ID}/test/results/ | GET, POST | Lesson test results list.
 /courses/{ID}/lessons/{ID}/test/questions/ | GET, POST | Test questions list.
@@ -1287,8 +1289,6 @@ created | datetime | yes | yes | | + | + | |
 Endpoint | Methods | Description
 -------------- | -------------- | --------------
 /content/hippocrates/main/ | GET, PUT, PATCH | Main information.
-/content/hippocrates/main/phones/ | GET, POST | Contact phones list.
-/content/hippocrates/main/phones/{ID}/ | PUT, PATCH, DELETE | Contact phones detail.
 /content/hippocrates/home/ | GET, PUT, PATCH | Home page content.
 /content/hippocrates/projects/ | GET, PUT, PATCH | Projects page content.
 /content/hippocrates/contacts/ | GET, PUT, PATCH | Contacts page content.
