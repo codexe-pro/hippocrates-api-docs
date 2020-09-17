@@ -2351,12 +2351,12 @@ Polls used to store statistics for platform clients.<br /></p>
 <tr>
 <td>/courses/{ID}/test/results/</td>
 <td>GET, POST</td>
-<td>Webinar test results list.</td>
+<td>Course test results list.</td>
 </tr>
 <tr>
 <td>/courses/{ID}/test/results/certificate/</td>
 <td>GET</td>
-<td>Webinar test certificate.</td>
+<td>Course test certificate.</td>
 </tr>
 <tr>
 <td>/courses/{ID}/test/questions/</td>
@@ -2387,6 +2387,16 @@ Polls used to store statistics for platform clients.<br /></p>
 <td>/courses/{ID}/lessons/{ID}/</td>
 <td>GET, PUT, PATCH</td>
 <td>Course lesson details.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/{ID}/files/</td>
+<td>GET, PUT, PATCH</td>
+<td>Lesson attached files list.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/{ID}/files/{ID}/</td>
+<td>GET, PUT, PATCH</td>
+<td>Lesson attached file detail.</td>
 </tr>
 <tr>
 <td>/courses/{ID}/lessons/{ID}/test/</td>
@@ -2501,16 +2511,6 @@ Polls used to store statistics for platform clients.<br /></p>
 <td>/content/hippocrates/main/</td>
 <td>GET, PUT, PATCH</td>
 <td>Main information.</td>
-</tr>
-<tr>
-<td>/content/hippocrates/main/phones/</td>
-<td>GET, POST</td>
-<td>Contact phones list.</td>
-</tr>
-<tr>
-<td>/content/hippocrates/main/phones/{ID}/</td>
-<td>PUT, PATCH, DELETE</td>
-<td>Contact phones detail.</td>
 </tr>
 <tr>
 <td>/content/hippocrates/home/</td>
