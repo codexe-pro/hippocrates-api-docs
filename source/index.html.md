@@ -1177,6 +1177,67 @@ You can check users registration using webinar check registration endpoint. If u
 
 
 
+# Courses
+
+## Endpoints
+
+> Get courses list example:
+
+```shell
+{
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+          "id": 1,
+            "name": "Surgery course",
+            "description": "Complex Surgery course",
+            "certificate_template": 2,
+            "points": 1,
+            "author": "Bill Gates",
+            "specializations": [],
+            "start_date": "2020-09-09",
+            "end_date": "2020-09-10",
+            "is_draft": true,
+            "certificate_available": true,
+            "course_image": "http://example.com/...png",
+            "text": "Lorem ipsum dolor...",
+            "success_percent": 90.0,
+            "max_tries": 2,
+            "has_test": true,
+            "test_questions_count": 10,
+            "add_to_favourites": false,
+            "created": "2020-09-16T22:42:43.551044",
+            "updated": "2020-09-16T22:43:08.523486",
+            "lessons_set": [...],
+            "course_test": {...}
+        }
+    ]
+}
+```
+
+Endpoint | Methods | Description
+-------------- | -------------- | --------------
+/courses/ | GET, POST | COurse list endpoint.
+/courses/{ID}/ | GET, PUT, PATCH | Course details.
+/courses/{ID}/test/ | GET, POST | Course test instance details.
+/courses/{ID}/test/results/ | GET, POST | Webinar test results list.
+/courses/{ID}/test/results/certificate/ | GET | Webinar test certificate.
+/courses/{ID}/test/questions/ | GET, POST | Test questions list.
+/courses/{ID}/test/questions/{ID}/ | GET, PUT, PATCH | Test question details.
+/courses/{ID}/test/questions/{ID}/answers/ | GET, POST | Test question answers list.
+/courses/{ID}/test/questions/{ID}/answers/{ID}/ | GET, PUT, PATCH | Test question answers detail.
+/courses/{ID}/lessons/ | GET, POST | Course lessons list endpoint.
+/courses/{ID}/lessons/{ID}/ | GET, PUT, PATCH | Course lesson details.
+/courses/{ID}/lessons/{ID}/test/ | GET, POST | Lesson test instance details.
+/courses/{ID}/lessons/{ID}/test/results/ | GET, POST | Lesson test results list.
+/courses/{ID}/lessons/{ID}/test/questions/ | GET, POST | Test questions list.
+/courses/{ID}/lessons/{ID}/test/questions/{ID}/ | GET, PUT, PATCH | Test question details.
+/courses/{ID}/lessons/{ID}/test/questions/{ID}/answers/ | GET, POST | Test question answers list.
+/courses/{ID}/lessons/{ID}/test/questions/{ID}/answers/{ID}/ | GET, PUT, PATCH | Test question answers detail.
+
+
 # Subscriptions
 
 Subscriptions are used to collect email addresses that can be used for mailing.
