@@ -447,10 +447,18 @@
               </ul>
           </li>
           <li>
-            <a href="#subscriptions" class="toc-h1 toc-link" data-title="Subscriptions">Subscriptions</a>
+            <a href="#courses" class="toc-h1 toc-link" data-title="Courses">Courses</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#endpoints-6" class="toc-h2 toc-link" data-title="Endpoints">Endpoints</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#subscriptions" class="toc-h1 toc-link" data-title="Subscriptions">Subscriptions</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#endpoints-7" class="toc-h2 toc-link" data-title="Endpoints">Endpoints</a>
                   </li>
                   <li>
                     <a href="#data-5" class="toc-h2 toc-link" data-title="Data">Data</a>
@@ -2282,9 +2290,138 @@ Polls used to store statistics for platform clients.<br /></p>
 <p>For anonymous users the platform will remember client by their IP address.</p>
 
 <p>You can check users registration using webinar check registration endpoint. If uses is registered you will recieve code 200, esle if user is not registered or event is not private you will recieve code 404.</p>
+<h1 id='courses'>Courses</h1><h2 id='endpoints-6'>Endpoints</h2>
+<blockquote>
+<p>Get courses list example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
+    <span class="s2">"count"</span>: 1,
+    <span class="s2">"next"</span>: null,
+    <span class="s2">"previous"</span>: null,
+    <span class="s2">"results"</span>: <span class="o">[</span>
+        <span class="o">{</span>
+          <span class="s2">"id"</span>: 1,
+            <span class="s2">"name"</span>: <span class="s2">"Surgery course"</span>,
+            <span class="s2">"description"</span>: <span class="s2">"Complex Surgery course"</span>,
+            <span class="s2">"certificate_template"</span>: 2,
+            <span class="s2">"points"</span>: 1,
+            <span class="s2">"author"</span>: <span class="s2">"Bill Gates"</span>,
+            <span class="s2">"specializations"</span>: <span class="o">[]</span>,
+            <span class="s2">"start_date"</span>: <span class="s2">"2020-09-09"</span>,
+            <span class="s2">"end_date"</span>: <span class="s2">"2020-09-10"</span>,
+            <span class="s2">"is_draft"</span>: <span class="nb">true</span>,
+            <span class="s2">"certificate_available"</span>: <span class="nb">true</span>,
+            <span class="s2">"course_image"</span>: <span class="s2">"http://example.com/...png"</span>,
+            <span class="s2">"text"</span>: <span class="s2">"Lorem ipsum dolor..."</span>,
+            <span class="s2">"success_percent"</span>: 90.0,
+            <span class="s2">"max_tries"</span>: 2,
+            <span class="s2">"has_test"</span>: <span class="nb">true</span>,
+            <span class="s2">"test_questions_count"</span>: 10,
+            <span class="s2">"add_to_favourites"</span>: <span class="nb">false</span>,
+            <span class="s2">"created"</span>: <span class="s2">"2020-09-16T22:42:43.551044"</span>,
+            <span class="s2">"updated"</span>: <span class="s2">"2020-09-16T22:43:08.523486"</span>,
+            <span class="s2">"lessons_set"</span>: <span class="o">[</span>...],
+            <span class="s2">"course_test"</span>: <span class="o">{</span>...<span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Endpoint</th>
+<th>Methods</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>/courses/</td>
+<td>GET, POST</td>
+<td>COurse list endpoint.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/</td>
+<td>GET, PUT, PATCH</td>
+<td>Course details.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/test/</td>
+<td>GET, POST</td>
+<td>Course test instance details.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/test/results/</td>
+<td>GET, POST</td>
+<td>Webinar test results list.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/test/results/certificate/</td>
+<td>GET</td>
+<td>Webinar test certificate.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/test/questions/</td>
+<td>GET, POST</td>
+<td>Test questions list.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/test/questions/{ID}/</td>
+<td>GET, PUT, PATCH</td>
+<td>Test question details.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/test/questions/{ID}/answers/</td>
+<td>GET, POST</td>
+<td>Test question answers list.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/test/questions/{ID}/answers/{ID}/</td>
+<td>GET, PUT, PATCH</td>
+<td>Test question answers detail.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/</td>
+<td>GET, POST</td>
+<td>Course lessons list endpoint.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/{ID}/</td>
+<td>GET, PUT, PATCH</td>
+<td>Course lesson details.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/{ID}/test/</td>
+<td>GET, POST</td>
+<td>Lesson test instance details.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/{ID}/test/results/</td>
+<td>GET, POST</td>
+<td>Lesson test results list.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/{ID}/test/questions/</td>
+<td>GET, POST</td>
+<td>Test questions list.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/{ID}/test/questions/{ID}/</td>
+<td>GET, PUT, PATCH</td>
+<td>Test question details.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/{ID}/test/questions/{ID}/answers/</td>
+<td>GET, POST</td>
+<td>Test question answers list.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/{ID}/test/questions/{ID}/answers/{ID}/</td>
+<td>GET, PUT, PATCH</td>
+<td>Test question answers detail.</td>
+</tr>
+</tbody></table>
 <h1 id='subscriptions'>Subscriptions</h1>
 <p>Subscriptions are used to collect email addresses that can be used for mailing.</p>
-<h2 id='endpoints-6'>Endpoints</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/subscriptions/
+<h2 id='endpoints-7'>Endpoints</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/subscriptions/
 
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
     <span class="s2">"count"</span>: 1,
@@ -2352,7 +2489,7 @@ Polls used to store statistics for platform clients.<br /></p>
 <td></td>
 </tr>
 </tbody></table>
-<h1 id='content'>Content</h1><h2 id='hippocrates-website-content'>Hippocrates Website Content</h2><h3 id='endpoints-7'>Endpoints</h3>
+<h1 id='content'>Content</h1><h2 id='hippocrates-website-content'>Hippocrates Website Content</h2><h3 id='endpoints-8'>Endpoints</h3>
 <table><thead>
 <tr>
 <th>Endpoint</th>
