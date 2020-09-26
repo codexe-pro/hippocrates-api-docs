@@ -447,6 +447,9 @@
               </ul>
           </li>
           <li>
+            <a href="#realtime-polls" class="toc-h1 toc-link" data-title="Realtime Polls">Realtime Polls</a>
+          </li>
+          <li>
             <a href="#courses" class="toc-h1 toc-link" data-title="Courses">Courses</a>
               <ul class="toc-list-h2">
                   <li>
@@ -2071,6 +2074,11 @@ Polls used to store statistics for platform clients.<br /></p>
 <td>Test question answers detail.</td>
 </tr>
 <tr>
+<td>/webinars/{ID}/poll/</td>
+<td>GET, POST</td>
+<td>Webinar poll details.</td>
+</tr>
+<tr>
 <td>/webinars/{ID}/poll/results/</td>
 <td>GET, POST</td>
 <td>Webinar poll results list.</td>
@@ -2094,6 +2102,41 @@ Polls used to store statistics for platform clients.<br /></p>
 <td>/webinars/{ID}/poll/questions/{ID}/answers/{ID}/</td>
 <td>GET, PUT, PATCH</td>
 <td>Poll question answers detail.</td>
+</tr>
+<tr>
+<td>/webinars/{ID}/realtime_poll/</td>
+<td>GET, POST</td>
+<td>Realtime poll details.</td>
+</tr>
+<tr>
+<td>/webinars/{ID}/realtime_poll/results/</td>
+<td>GET, POST</td>
+<td>Realtime poll results list.</td>
+</tr>
+<tr>
+<td>/webinars/{ID}/realtime_poll/questions/</td>
+<td>GET, POST</td>
+<td>Realtime poll questions list.</td>
+</tr>
+<tr>
+<td>/webinars/{ID}/realtime_poll/questions/{ID}/</td>
+<td>GET, PUT, PATCH</td>
+<td>Realtime poll question details.</td>
+</tr>
+<tr>
+<td>/webinars/{ID}/realtime_poll/questions/{ID}/launch/</td>
+<td>POST</td>
+<td>Realtime poll question launch endpoint.</td>
+</tr>
+<tr>
+<td>/webinars/{ID}/realtime_poll/questions/{ID}/answers/</td>
+<td>GET, POST</td>
+<td>Realtime poll question answers list.</td>
+</tr>
+<tr>
+<td>/webinars/{ID}/realtime_poll/questions/{ID}/answers/{ID}/</td>
+<td>GET, PUT, PATCH</td>
+<td>Realtime poll question answers detail.</td>
 </tr>
 </tbody></table>
 <h2 id='data-4'>Data</h2>
@@ -2290,6 +2333,32 @@ Polls used to store statistics for platform clients.<br /></p>
 <p>For anonymous users the platform will remember client by their IP address.</p>
 
 <p>You can check users registration using webinar check registration endpoint. If uses is registered you will recieve code 200, esle if user is not registered or event is not private you will recieve code 404.</p>
+<h1 id='realtime-polls'>Realtime Polls</h1>
+<blockquote>
+<p>Message with poll data from server example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
+    <span class="s2">"webinar_id"</span>: 1, 
+    <span class="s2">"question"</span>: <span class="o">{</span>
+         <span class="s2">"id"</span>: 1, 
+         <span class="s2">"title"</span>: <span class="s2">"Question"</span>, 
+         <span class="s2">"multiple_answers"</span>: <span class="nb">false</span>, 
+         <span class="s2">"answers_set"</span>: <span class="o">[</span>
+               <span class="o">{</span><span class="s2">"id"</span>: 1, <span class="s2">"title"</span>: <span class="s2">"Answer 1"</span><span class="o">}</span>,
+               <span class="o">{</span><span class="s2">"id"</span>: 2, <span class="s2">"title"</span>: <span class="s2">"Answer 2"</span><span class="o">}</span>
+          <span class="o">]</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>Realtime polls are the same objects like Polls.
+Realtime - means that we can launch realtime question when user watching webinar. </p>
+
+<p>To launch poll send POST request to realtime poll question launch endpoint: <a href="/webinars/{ID}/realtime_poll/questions/{ID}/launch/">/webinars/{ID}/realtime_poll/questions/{ID}/launch/</a></p>
+
+<p>When we launch poll all client connected to realtime polls service via WebSocket will reveive message with poll data json.</p>
+
+<p>Realtime polls service (Sandbox) URL - <a href="https://sandbox-polls.hippocrates.org.ua/">https://sandbox-polls.hippocrates.org.ua/</a><br/>
+WebSocket URL - <a href="wss://sandbox-polls.hippocrates.org.ua/ws/{webinar_id}">wss://sandbox-polls.hippocrates.org.ua/ws/{webinar_id}</a><br/></p>
 <h1 id='courses'>Courses</h1><h2 id='endpoints-6'>Endpoints</h2>
 <blockquote>
 <p>Get courses list example:</p>
