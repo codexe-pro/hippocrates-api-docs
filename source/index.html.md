@@ -963,6 +963,11 @@ Use poll results endpoint to send poll result.
 * If poll is not available for user, endpoint will return 403 for POST request.
 
 
+
+
+
+
+
 # Events
 
 ## Endpoints
@@ -1122,11 +1127,19 @@ Endpoint | Methods | Description
 /webinars/{ID}/test/questions/{ID}/ | GET, PUT, PATCH | Test question details.
 /webinars/{ID}/test/questions/{ID}/answers/ | GET, POST | Test question answers list.
 /webinars/{ID}/test/questions/{ID}/answers/{ID}/ | GET, PUT, PATCH | Test question answers detail.
+/webinars/{ID}/poll/ | GET, POST | Webinar poll details.
 /webinars/{ID}/poll/results/ | GET, POST | Webinar poll results list.
 /webinars/{ID}/poll/questions/ | GET, POST | Poll questions list.
 /webinars/{ID}/poll/questions/{ID}/ | GET, PUT, PATCH | Poll question details.
 /webinars/{ID}/poll/questions/{ID}/answers/ | GET, POST | Poll question answers list.
 /webinars/{ID}/poll/questions/{ID}/answers/{ID}/ | GET, PUT, PATCH | Poll question answers detail.
+/webinars/{ID}/realtime_poll/ | GET, POST | Realtime poll details.
+/webinars/{ID}/realtime_poll/results/ | GET, POST | Realtime poll results list.
+/webinars/{ID}/realtime_poll/questions/ | GET, POST | Realtime poll questions list.
+/webinars/{ID}/realtime_poll/questions/{ID}/ | GET, PUT, PATCH | Realtime poll question details.
+/webinars/{ID}/realtime_poll/questions/{ID}/launch/ | POST | Realtime poll question launch endpoint.
+/webinars/{ID}/realtime_poll/questions/{ID}/answers/ | GET, POST | Realtime poll question answers list.
+/webinars/{ID}/realtime_poll/questions/{ID}/answers/{ID}/ | GET, PUT, PATCH | Realtime poll question answers detail.
 
 
 ## Data
@@ -1175,6 +1188,36 @@ For anonymous users the platform will remember client by their IP address.
 
 You can check users registration using webinar check registration endpoint. If uses is registered you will recieve code 200, esle if user is not registered or event is not private you will recieve code 404.
 
+
+
+# Realtime Polls
+
+> Message with poll data from server example:
+
+```shell
+{
+    "webinar_id": 1, 
+    "question": {
+         "id": 1, 
+         "title": "Question", 
+         "multiple_answers": false, 
+         "answers_set": [
+               {"id": 1, "title": "Answer 1"},
+               {"id": 2, "title": "Answer 2"}
+          ]
+    }
+}
+```
+
+Realtime polls are the same objects like Polls.
+Realtime - means that we can launch realtime question when user watching webinar. 
+
+To launch poll send POST request to realtime poll question launch endpoint: [/webinars/{ID}/realtime_poll/questions/{ID}/launch/](/webinars/{ID}/realtime_poll/questions/{ID}/launch/)
+
+When we launch poll all client connected to realtime polls service via WebSocket will reveive message with poll data json.
+
+Realtime polls service (Sandbox) URL - [https://sandbox-polls.hippocrates.org.ua/](https://sandbox-polls.hippocrates.org.ua/)<br/>
+WebSocket URL - [wss://sandbox-polls.hippocrates.org.ua/ws/{webinar_id}](wss://sandbox-polls.hippocrates.org.ua/ws/{webinar_id})<br/>
 
 
 # Courses
