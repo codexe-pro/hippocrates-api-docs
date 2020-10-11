@@ -2522,6 +2522,86 @@ WebSocket URL - <a href="wss://sandbox-polls.hippocrates.org.ua/ws/{webinar_id}"
 </tr>
 </tbody></table>
 <h2 id='courses-passing'>Courses passing</h2>
+<blockquote>
+<p>Start course example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST http://localhost:8000/api/v0/courses/1/start/
+
+</code></pre></div>
+<blockquote>
+<p>Success response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
+    <span class="s2">"current_lesson"</span>: 1,
+    <span class="s2">"is_last_lesson"</span>: <span class="nb">false</span>,
+    <span class="s2">"start_datetime"</span>: <span class="s2">"2020-10-07T11:47:45.479148"</span>,
+    <span class="s2">"finished"</span>: <span class="nb">false</span>
+<span class="o">}</span>
+
+</code></pre></div>
+<blockquote>
+<p>Start lesson test example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST http://localhost:8000/api/v0/courses/1/lesson/1/test/start/
+
+</code></pre></div>
+<blockquote>
+<p>Success response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
+    <span class="s2">"lesson"</span>: 1,
+    <span class="s2">"test_end_datetime"</span>: <span class="s2">"2020-10-07T20:53:14.973651"</span>,
+    <span class="s2">"test_passed"</span>: <span class="nb">false</span>,
+    <span class="s2">"finished"</span>: <span class="nb">false</span>,
+    <span class="s2">"course_progress"</span>: <span class="o">{</span>
+        <span class="s2">"current_lesson"</span>: 1,
+        <span class="s2">"is_last_lesson"</span>: <span class="nb">false</span>,
+        <span class="s2">"start_datetime"</span>: <span class="s2">"2020-10-07T11:47:45.479148"</span>,
+        <span class="s2">"finished"</span>: <span class="nb">false</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div>
+<blockquote>
+<p>Finish lesson example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST http://localhost:8000/api/v0/courses/1/lesson/1/finish/
+
+</code></pre></div>
+<blockquote>
+<p>Success response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
+    <span class="s2">"lesson"</span>: 1,
+    <span class="s2">"test_end_datetime"</span>: <span class="s2">"2020-10-07T20:53:14.973651"</span>,
+    <span class="s2">"test_passed"</span>: <span class="nb">true</span>,
+    <span class="s2">"finished"</span>: <span class="nb">true</span>,
+    <span class="s2">"course_progress"</span>: <span class="o">{</span>
+        <span class="s2">"current_lesson"</span>: 2,
+        <span class="s2">"is_last_lesson"</span>: <span class="nb">true</span>,
+        <span class="s2">"start_datetime"</span>: <span class="s2">"2020-10-07T11:47:45.479148"</span>,
+        <span class="s2">"finished"</span>: <span class="nb">true</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div>
+<blockquote>
+<p>Finish course example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST http://localhost:8000/api/v0/courses/1/finish/
+
+</code></pre></div>
+<blockquote>
+<p>Success response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="o">{</span>
+    <span class="s2">"current_lesson"</span>: 2,
+    <span class="s2">"is_last_lesson"</span>: <span class="nb">true</span>,
+    <span class="s2">"start_datetime"</span>: <span class="s2">"2020-10-07T11:47:45.479148"</span>,
+    <span class="s2">"finished"</span>: <span class="nb">true</span>
+<span class="o">}</span>
+
+</code></pre></div>
 <p>The user can pass the course as many times as specified in the <strong>max_tries</strong> field in course. 0 value means that course can be passed unlimited times.</p>
 
 <p>To start course, you must send POST request to course start endpoint - <strong>/courses/{ID}/start/</strong>.
