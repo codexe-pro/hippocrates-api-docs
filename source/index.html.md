@@ -1264,6 +1264,8 @@ Endpoint | Methods | Description
 -------------- | -------------- | --------------
 /courses/ | GET, POST | COurse list endpoint.
 /courses/{ID}/ | GET, PUT, PATCH | Course details.
+/courses/{ID}/start/ | POST | Course start.
+/courses/{ID}/finish/ | POST | Course finish.
 /courses/{ID}/test/ | GET, POST | Course test instance details.
 /courses/{ID}/test/results/ | GET, POST | Course test results list.
 /courses/{ID}/test/results/certificate/ | GET | Course test certificate.
@@ -1273,14 +1275,43 @@ Endpoint | Methods | Description
 /courses/{ID}/test/questions/{ID}/answers/{ID}/ | GET, PUT, PATCH | Test question answers detail.
 /courses/{ID}/lessons/ | GET, POST | Course lessons list endpoint.
 /courses/{ID}/lessons/{ID}/ | GET, PUT, PATCH | Course lesson details.
+/courses/{ID}/lessons/finish/ | POST | Course lessons start.
 /courses/{ID}/lessons/{ID}/files/ | GET, PUT, PATCH | Lesson attached files list.
 /courses/{ID}/lessons/{ID}/files/{ID}/ | GET, PUT, PATCH | Lesson attached file detail.
 /courses/{ID}/lessons/{ID}/test/ | GET, POST | Lesson test instance details.
+/courses/{ID}/lessons/{ID}/start/ | POST | Lesson test start.
 /courses/{ID}/lessons/{ID}/test/results/ | GET, POST | Lesson test results list.
 /courses/{ID}/lessons/{ID}/test/questions/ | GET, POST | Test questions list.
 /courses/{ID}/lessons/{ID}/test/questions/{ID}/ | GET, PUT, PATCH | Test question details.
 /courses/{ID}/lessons/{ID}/test/questions/{ID}/answers/ | GET, POST | Test question answers list.
 /courses/{ID}/lessons/{ID}/test/questions/{ID}/answers/{ID}/ | GET, PUT, PATCH | Test question answers detail.
+
+## Courses passing
+
+The user can pass the course as many times as specified in the **max_tries** field in course. 0 value means that course can be passed unlimited times.
+
+To start course, you must send POST request to course start endpoint - **/courses/{ID}/start/**.
+You will receive **current lesson ID**  in the success response.
+
+Next step it's to pass lesson test if it exists. You can use **has_test** field in lesson to check that test exists.
+
+If lesson **test_time** fields value greater then **0** we should start test before it passing (0 value means that test time is unlimited.).</br>
+To start lesson test use start lesson test endpoint - **/courses/{ID}/lesson/{ID}/test/start/**. You will receive **test_end_datetime** in success response.
+
+After test passing, you can finish current lesson and get **next lesson ID** if exists. </br>
+To finish lesson use lesson finish endpoint - **/courses/{ID}/lesson/{ID}/finish/**.
+
+When last lesson is passed you can pass course test if exists. Use the same **has_test** value as in lesson to check that test exists.
+
+To finish course use course finish endpoint - **/courses/{ID}/start/**.
+
+### Additional
+
+Also you can get current course progress or lesson progress by sending POST request to following endpoints:
+
+* **/courses/{ID}/progress/**
+* **/courses/{ID}/lesson/{ID}/progress/**
+
 
 
 # Subscriptions
