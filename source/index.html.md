@@ -1288,6 +1288,94 @@ Endpoint | Methods | Description
 
 ## Courses passing
 
+> Start course example:
+
+```shell
+curl -X POST http://localhost:8000/api/v0/courses/1/start/
+
+```
+
+> Success response:
+
+```shell
+{
+    "current_lesson": 1,
+    "is_last_lesson": false,
+    "start_datetime": "2020-10-07T11:47:45.479148",
+    "finished": false
+}
+
+```
+
+> Start lesson test example:
+
+```shell
+curl -X POST http://localhost:8000/api/v0/courses/1/lesson/1/test/start/
+
+```
+
+> Success response:
+
+```shell
+{
+    "lesson": 1,
+    "test_end_datetime": "2020-10-07T20:53:14.973651",
+    "test_passed": false,
+    "finished": false,
+    "course_progress": {
+        "current_lesson": 1,
+        "is_last_lesson": false,
+        "start_datetime": "2020-10-07T11:47:45.479148",
+        "finished": false
+    }
+}
+
+```
+
+> Finish lesson example:
+
+```shell
+curl -X POST http://localhost:8000/api/v0/courses/1/lesson/1/finish/
+
+```
+
+> Success response:
+
+```shell
+{
+    "lesson": 1,
+    "test_end_datetime": "2020-10-07T20:53:14.973651",
+    "test_passed": true,
+    "finished": true,
+    "course_progress": {
+        "current_lesson": 2,
+        "is_last_lesson": true,
+        "start_datetime": "2020-10-07T11:47:45.479148",
+        "finished": true
+    }
+}
+
+```
+
+> Finish course example:
+
+```shell
+curl -X POST http://localhost:8000/api/v0/courses/1/finish/
+
+```
+
+> Success response:
+
+```shell
+{
+    "current_lesson": 2,
+    "is_last_lesson": true,
+    "start_datetime": "2020-10-07T11:47:45.479148",
+    "finished": true
+}
+
+```
+
 The user can pass the course as many times as specified in the **max_tries** field in course. 0 value means that course can be passed unlimited times.
 
 To start course, you must send POST request to course start endpoint - **/courses/{ID}/start/**.
