@@ -455,6 +455,9 @@
                   <li>
                     <a href="#endpoints-6" class="toc-h2 toc-link" data-title="Endpoints">Endpoints</a>
                   </li>
+                  <li>
+                    <a href="#courses-passing" class="toc-h2 toc-link" data-title="Courses passing">Courses passing</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -2413,6 +2416,16 @@ WebSocket URL - <a href="wss://sandbox-polls.hippocrates.org.ua/ws/{webinar_id}"
 <td>Course details.</td>
 </tr>
 <tr>
+<td>/courses/{ID}/start/</td>
+<td>POST</td>
+<td>Course start.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/finish/</td>
+<td>POST</td>
+<td>Course finish.</td>
+</tr>
+<tr>
 <td>/courses/{ID}/test/</td>
 <td>GET, POST</td>
 <td>Course test instance details.</td>
@@ -2458,6 +2471,11 @@ WebSocket URL - <a href="wss://sandbox-polls.hippocrates.org.ua/ws/{webinar_id}"
 <td>Course lesson details.</td>
 </tr>
 <tr>
+<td>/courses/{ID}/lessons/finish/</td>
+<td>POST</td>
+<td>Course lessons start.</td>
+</tr>
+<tr>
 <td>/courses/{ID}/lessons/{ID}/files/</td>
 <td>GET, PUT, PATCH</td>
 <td>Lesson attached files list.</td>
@@ -2471,6 +2489,11 @@ WebSocket URL - <a href="wss://sandbox-polls.hippocrates.org.ua/ws/{webinar_id}"
 <td>/courses/{ID}/lessons/{ID}/test/</td>
 <td>GET, POST</td>
 <td>Lesson test instance details.</td>
+</tr>
+<tr>
+<td>/courses/{ID}/lessons/{ID}/start/</td>
+<td>POST</td>
+<td>Lesson test start.</td>
 </tr>
 <tr>
 <td>/courses/{ID}/lessons/{ID}/test/results/</td>
@@ -2498,6 +2521,30 @@ WebSocket URL - <a href="wss://sandbox-polls.hippocrates.org.ua/ws/{webinar_id}"
 <td>Test question answers detail.</td>
 </tr>
 </tbody></table>
+<h2 id='courses-passing'>Courses passing</h2>
+<p>The user can pass the course as many times as specified in the <strong>max_tries</strong> field in course. 0 value means that course can be passed unlimited times.</p>
+
+<p>To start course, you must send POST request to course start endpoint - <strong>/courses/{ID}/start/</strong>.
+You will receive <strong>current lesson ID</strong>  in the success response.</p>
+
+<p>Next step it&#39;s to pass lesson test if it exists. You can use <strong>has_test</strong> field in lesson to check that test exists.</p>
+
+<p>If lesson <strong>test_time</strong> fields value greater then <strong>0</strong> we should start test before it passing (0 value means that test time is unlimited.).</br>
+To start lesson test use start lesson test endpoint - <strong>/courses/{ID}/lesson/{ID}/test/start/</strong>. You will receive <strong>test_end_datetime</strong> in success response.</p>
+
+<p>After test passing, you can finish current lesson and get <strong>next lesson ID</strong> if exists. </br>
+To finish lesson use lesson finish endpoint - <strong>/courses/{ID}/lesson/{ID}/finish/</strong>.</p>
+
+<p>When last lesson is passed you can pass course test if exists. Use the same <strong>has_test</strong> value as in lesson to check that test exists.</p>
+
+<p>To finish course use course finish endpoint - <strong>/courses/{ID}/start/</strong>.</p>
+<h3 id='additional'>Additional</h3>
+<p>Also you can get current course progress or lesson progress by sending POST request to following endpoints:</p>
+
+<ul>
+<li><strong>/courses/{ID}/progress/</strong></li>
+<li><strong>/courses/{ID}/lesson/{ID}/progress/</strong></li>
+</ul>
 <h1 id='subscriptions'>Subscriptions</h1>
 <p>Subscriptions are used to collect email addresses that can be used for mailing.</p>
 <h2 id='endpoints-7'>Endpoints</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET http://localhost:8000/api/v0/subscriptions/
